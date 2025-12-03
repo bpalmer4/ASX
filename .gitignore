@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Cache
+.readabs_cache/
+
+# Logs
+LOGS/
+
+# macOS
+.DS_Store
