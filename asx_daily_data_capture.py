@@ -8,7 +8,14 @@ from typing import Final
 
 import json
 import pandas as pd
-import common
+import requests
+
+
+def request_get(url: str) -> bytes:
+    """Use requests to get the contents of the specified URL."""
+    response = requests.get(url, allow_redirects=True, timeout=20)
+    response.raise_for_status()
+    return response.content
 
 # nameing conventions
 CASH_RATE: Final = "cash_rate"
@@ -25,7 +32,7 @@ def get_asx_data() -> pd.DataFrame:
         "https://asx.api.markitdigital.com/asx-research/1.0/derivatives/"
         "interest-rate/IB/futures?days=1&height=179&width=179"
     )
-    raw_jason = common.request_get(url)
+    raw_jason = request_get(url)
     df = pd.DataFrame(json.loads(raw_jason)["data"]["items"])
     df[CASH_RATE] = (100 - df.pricePreviousSettlement).round(3)
     # df[SCRAPE_DATE] = pd.to_datetime('today').normalize().date()
